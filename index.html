@@ -116,7 +116,9 @@
     .badge-active{background:#241800;color:var(--amber);border:1px solid rgba(245,158,11,.2)}
     .badge-planned{background:var(--tag-bg);color:var(--muted);border:1px solid var(--border)}
     .cert-progress{margin-top:8px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
-    .cert-progress-bar{height:100%;background:linear-gradient(90deg,var(--amber),#fbbf24);border-radius:2px;animation:grow 1.2s ease-out forwards}
+    .cert-progress-bar{height:100%;background:linear-gradient(90deg,var(--amber),#fbbf24);border-radius:2px;width:0%;transition:width 1.4s cubic-bezier(.23,1,.32,1)}
+    .cert-progress-bar.pulsing{animation:certpulse 2s ease-in-out infinite}
+    @keyframes certpulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(245,158,11,.4)}50%{opacity:.85;box-shadow:0 0 8px 3px rgba(245,158,11,.25)}}
     @keyframes grow{from{width:0}}
     .credly-note{background:var(--surface);border:1px dashed var(--border2);border-radius:8px;padding:14px 18px;font-size:.82rem;color:var(--muted);margin-top:8px;display:flex;align-items:center;gap:10px}
     .credly-note svg{flex-shrink:0;opacity:.5}
@@ -155,7 +157,7 @@
     .skill-item:last-child{margin-bottom:0}
     .skill-name{font-size:.85rem;color:var(--text)}
     .skill-bar-wrap{width:100px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;flex-shrink:0}
-    .skill-bar{height:100%;border-radius:2px;animation:grow 1s ease-out forwards}
+    .skill-bar{height:100%;border-radius:2px;width:0%;transition:width 1.1s cubic-bezier(.23,1,.32,1)}
     .bar-high{background:linear-gradient(90deg,var(--green),#6ee7b7)}
     .bar-mid{background:linear-gradient(90deg,var(--accent),#93c5fd)}
     .bar-low{background:linear-gradient(90deg,var(--muted),var(--border2))}
@@ -179,11 +181,12 @@
     .sample-desc{font-size:.88rem;color:var(--muted);line-height:1.7}
     .sample-lens{font-size:.82rem;color:var(--accent2);font-style:italic;margin-top:8px}
     .sample-body{padding:0 28px 24px}
-    table{width:100%;border-collapse:collapse;margin-top:20px;font-size:.8rem}
+    .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:20px;border-radius:6px}
+    table{width:100%;border-collapse:collapse;font-size:.8rem;min-width:520px}
     thead tr{border-bottom:1px solid var(--border)}
-    th{text-align:left;padding:8px 12px;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;color:var(--accent2);text-transform:uppercase}
+    th{text-align:left;padding:8px 12px;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;color:var(--accent2);text-transform:uppercase;white-space:nowrap}
     td{padding:11px 12px;border-bottom:1px solid rgba(28,36,56,.6);color:var(--muted);vertical-align:top;line-height:1.6}
-    td:first-child{color:var(--text);font-weight:500}
+    td:first-child{color:var(--text);font-weight:500;white-space:nowrap}
     tr:last-child td{border-bottom:none}
     .disclaimer{margin-top:16px;font-size:.75rem;color:var(--faint);font-style:italic;padding:10px 14px;background:rgba(28,36,56,.4);border-radius:5px}
     .incoming-card{background:transparent;border:1px dashed var(--border2);border-radius:12px;padding:32px 28px;text-align:center;margin-bottom:16px}
@@ -220,8 +223,9 @@
     .footer-built{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--faint);letter-spacing:.05em}
 
     /* ── FADE IN ── */
-    .fade{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
-    .fade.visible{opacity:1;transform:none}
+    .fade{opacity:1;transform:none;transition:opacity .65s ease,transform .65s ease}
+    .fade.animate{opacity:0;transform:translateY(20px)}
+    .fade.animate.visible{opacity:1;transform:none}
 
     @media(max-width:660px){
       .about-layout,.roadmap-intro,.skills-layout,.contact-layout{grid-template-columns:1fr}
@@ -287,17 +291,18 @@
     <p class="section-sub">The context behind the credentials.</p>
     <div class="about-layout">
       <div class="about-body">
-        <p>I'm a BCA graduate entering the <strong>MBA-ITBM programme at SCIT Pune</strong> with an Information Security Management specialisation — aligned with the ISACA model curriculum for information security management.</p>
+        <p>I'm a <strong>BCA graduate from SICSR Pune (CGPA: 7.0)</strong> entering the <strong>MBA-ITBM programme at SCIT Pune</strong> with an Information Security Management specialisation — aligned with the ISACA model curriculum for information security management.</p>
         <p>My focus is the intersection of <strong>technology risk, control frameworks, and business assurance</strong> — specifically IT audit and GRC advisory. The goal is clear: Big 4 Risk Advisory or a senior BFSI security role within 3–5 years of graduating.</p>
         <p>Before SCIT, I completed a <strong>DevOps internship at HJCloud Systems</strong> and earned my AWS Cloud Practitioner certification — giving me hands-on exposure to cloud architecture that most GRC candidates don't have at entry level. I'm using the pre-MBA window deliberately: AWS SAA by March, Security+ by May, then SCIT in June.</p>
         <div class="about-highlight">
           <p>"Most MBA students walk into GRC with zero technical context. I'm walking in with cloud architecture experience and two security certifications. That gap is the plan."</p>
         </div>
-        <p>I'm an ISACA student member, tracking toward CISA and CRISC — the two credentials that define serious IS audit and enterprise risk management careers.</p>
+        <p>I'm tracking toward <strong>CISA and CRISC</strong> — the two credentials that define serious IS audit and enterprise risk management careers.</p>
+        <p>Beyond technical credentials, I've demonstrated early leadership through roles as <strong>House Captain, Student Committee Member, and Football Team Captain</strong> — responsible for team coordination, decision-making under pressure, and representing peer interests in structured environments. These experiences built the communication and stakeholder management skills that GRC roles demand.</p>
         <div class="timeline-mini">
           <div class="tm-item done">
             <div class="tm-year">2022 – 2025</div>
-            <div class="tm-text"><strong>BCA Graduate</strong> — Built technical foundation in systems and infrastructure</div>
+            <div class="tm-text"><strong>BCA — SICSR Pune</strong> · CGPA 7.0 · Systems, networks, and cloud fundamentals</div>
           </div>
           <div class="tm-item done">
             <div class="tm-year">Jan – Apr 2025</div>
@@ -315,19 +320,19 @@
       </div>
       <div class="about-sidebar">
         <div class="info-card">
+          <div class="info-card-label">Education</div>
+          <div class="info-card-value">BCA — SICSR Pune</div>
+          <div class="info-card-sub">CGPA: 7.0 · Graduated 2025</div>
+        </div>
+        <div class="info-card">
           <div class="info-card-label">Current Programme</div>
           <div class="info-card-value">MBA-ITBM</div>
           <div class="info-card-sub">ISM Specialisation · SCIT Pune<br/>Joining June 2026</div>
         </div>
         <div class="info-card">
-          <div class="info-card-label">Membership</div>
-          <div class="info-card-value">ISACA Student Member</div>
-          <div class="info-card-sub">CISA & CRISC certification track</div>
-        </div>
-        <div class="info-card">
           <div class="info-card-label">Target Role</div>
           <div class="info-card-value">GRC / Risk Advisory</div>
-          <div class="info-card-sub">Big 4 · BFSI Security<br/>₹25–30 LPA within 3–5 years</div>
+          <div class="info-card-sub">Big 4 · BFSI Security</div>
         </div>
         <div class="info-card">
           <div class="info-card-label">Location</div>
@@ -346,7 +351,7 @@
     <h2>Certifications</h2>
     <div class="certs-header-row">
       <p class="section-sub" style="margin-bottom:0">A structured credential path, not a random collection.</p>
-      <div class="certs-stat"><span>1 / 6</span>earned so far · building</div>
+      <div class="certs-stat"><span data-counter="1" data-suffix=" / 6">1 / 6</span>earned so far · building</div>
     </div>
 
     <div class="cert-group">
@@ -366,7 +371,7 @@
         <div class="cert-body">
           <div class="cert-name">AWS Solutions Architect – Associate</div>
           <div class="cert-meta">Amazon Web Services · Target: March 2026</div>
-          <div class="cert-progress"><div class="cert-progress-bar" style="width:75%"></div></div>
+          <div class="cert-progress"><div class="cert-progress-bar" data-width="75"></div></div>
         </div>
         <div class="cert-right">
           <span class="cert-badge badge-active">In Progress</span>
@@ -441,11 +446,11 @@
     <p class="section-sub">Where I've been, where I am, where this compounds.</p>
     <div class="roadmap-intro">
       <div class="roadmap-stat">
-        <span class="roadmap-stat-num">~10 wks</span>
+        <span class="roadmap-stat-num" data-counter="10" data-prefix="~" data-suffix=" wks">~10 wks</span>
         <div class="roadmap-stat-label">Pre-MBA window remaining<br/>being used deliberately</div>
       </div>
       <div class="roadmap-stat">
-        <span class="roadmap-stat-num">5 yrs</span>
+        <span class="roadmap-stat-num" data-counter="5" data-suffix=" yrs">5 yrs</span>
         <div class="roadmap-stat-label">Horizon for senior GRC role<br/>with full CISA + CRISC stack</div>
       </div>
     </div>
@@ -454,8 +459,8 @@
         <div class="rm-dot"></div>
         <span class="rm-period">2022 – 2025</span>
         <div class="rm-title">Foundation — BCA + Technical Exposure</div>
-        <div class="rm-desc">Completed BCA with focus on systems, networks, and cloud fundamentals. Supplemented with IBM Cloud Computing course, AWS Cloud Practitioner, and a DevOps internship at HJCloud Systems. Established the technical baseline that most GRC candidates lack.</div>
-        <div class="rm-tags"><span class="rm-tag">AWS CCP</span><span class="rm-tag">DevOps Internship</span><span class="rm-tag">BCA Graduate</span></div>
+        <div class="rm-desc">Completed BCA from SICSR Pune (CGPA: 7.0) with focus on systems, networks, and cloud fundamentals. Supplemented with IBM Cloud Computing course, AWS Cloud Practitioner, and a DevOps internship at HJCloud Systems. Established the technical baseline that most GRC candidates lack.</div>
+        <div class="rm-tags"><span class="rm-tag">SICSR Pune</span><span class="rm-tag">CGPA 7.0</span><span class="rm-tag">AWS CCP</span><span class="rm-tag">DevOps Internship</span></div>
       </div>
       <div class="rm-item now">
         <div class="rm-dot"></div>
@@ -489,8 +494,8 @@
         <div class="rm-dot"></div>
         <span class="rm-period">Post-MBA · 2028+</span>
         <div class="rm-title">CRISC + Senior Risk Advisory Role</div>
-        <div class="rm-desc">CRISC (Certified in Risk and Information Systems Control) adds the enterprise risk management dimension to a CISA-anchored profile — the combination that gets to ₹25–30 LPA in Big 4 or BFSI senior security leadership.</div>
-        <div class="rm-tags"><span class="rm-tag">CRISC</span><span class="rm-tag">Big 4 / BFSI</span><span class="rm-tag">₹25–30 LPA Target</span></div>
+        <div class="rm-desc">CRISC (Certified in Risk and Information Systems Control) adds the enterprise risk management dimension to a CISA-anchored profile — the combination that positions for senior Big 4 or BFSI security leadership roles.</div>
+        <div class="rm-tags"><span class="rm-tag">CRISC</span><span class="rm-tag">Big 4 / BFSI</span><span class="rm-tag">Senior GRC Role</span></div>
       </div>
     </div>
   </div>
@@ -512,28 +517,28 @@
         <div class="skill-item">
           <span class="skill-name">Risk Identification & Categorisation</span>
           <div style="display:flex;align-items:center">
-            <div class="skill-bar-wrap"><div class="skill-bar bar-mid" style="width:55%"></div></div>
+            <div class="skill-bar-wrap"><div class="skill-bar bar-mid" data-width="55"></div></div>
             <span class="skill-level">Developing</span>
           </div>
         </div>
         <div class="skill-item">
           <span class="skill-name">Control Mapping (Asset→Risk→Control)</span>
           <div style="display:flex;align-items:center">
-            <div class="skill-bar-wrap"><div class="skill-bar bar-mid" style="width:50%"></div></div>
+            <div class="skill-bar-wrap"><div class="skill-bar bar-mid" data-width="50"></div></div>
             <span class="skill-level">Developing</span>
           </div>
         </div>
         <div class="skill-item">
           <span class="skill-name">IT Audit Concepts</span>
           <div style="display:flex;align-items:center">
-            <div class="skill-bar-wrap"><div class="skill-bar bar-low" style="width:35%"></div></div>
+            <div class="skill-bar-wrap"><div class="skill-bar bar-low" data-width="35"></div></div>
             <span class="skill-level">Foundational</span>
           </div>
         </div>
         <div class="skill-item">
           <span class="skill-name">Compliance Framework Awareness</span>
           <div style="display:flex;align-items:center">
-            <div class="skill-bar-wrap"><div class="skill-bar bar-low" style="width:40%"></div></div>
+            <div class="skill-bar-wrap"><div class="skill-bar bar-low" data-width="40"></div></div>
             <span class="skill-level">Foundational</span>
           </div>
         </div>
@@ -548,28 +553,28 @@
         <div class="skill-item">
           <span class="skill-name">AWS Architecture (SAA level)</span>
           <div style="display:flex;align-items:center">
-            <div class="skill-bar-wrap"><div class="skill-bar bar-high" style="width:75%"></div></div>
+            <div class="skill-bar-wrap"><div class="skill-bar bar-high" data-width="75"></div></div>
             <span class="skill-level">Proficient</span>
           </div>
         </div>
         <div class="skill-item">
           <span class="skill-name">Cloud Security Principles</span>
           <div style="display:flex;align-items:center">
-            <div class="skill-bar-wrap"><div class="skill-bar bar-mid" style="width:60%"></div></div>
+            <div class="skill-bar-wrap"><div class="skill-bar bar-mid" data-width="60"></div></div>
             <span class="skill-level">Developing</span>
           </div>
         </div>
         <div class="skill-item">
           <span class="skill-name">IAM & Access Control</span>
           <div style="display:flex;align-items:center">
-            <div class="skill-bar-wrap"><div class="skill-bar bar-mid" style="width:65%"></div></div>
+            <div class="skill-bar-wrap"><div class="skill-bar bar-mid" data-width="65"></div></div>
             <span class="skill-level">Developing</span>
           </div>
         </div>
         <div class="skill-item">
           <span class="skill-name">Network & Infrastructure Basics</span>
           <div style="display:flex;align-items:center">
-            <div class="skill-bar-wrap"><div class="skill-bar bar-mid" style="width:55%"></div></div>
+            <div class="skill-bar-wrap"><div class="skill-bar bar-mid" data-width="55"></div></div>
             <span class="skill-level">Developing</span>
           </div>
         </div>
@@ -584,21 +589,21 @@
         <div class="skill-item">
           <span class="skill-name">Structured Written Communication</span>
           <div style="display:flex;align-items:center">
-            <div class="skill-bar-wrap"><div class="skill-bar bar-high" style="width:85%"></div></div>
+            <div class="skill-bar-wrap"><div class="skill-bar bar-high" data-width="85"></div></div>
             <span class="skill-level">Strong</span>
           </div>
         </div>
         <div class="skill-item">
           <span class="skill-name">Technical Documentation</span>
           <div style="display:flex;align-items:center">
-            <div class="skill-bar-wrap"><div class="skill-bar bar-high" style="width:70%"></div></div>
+            <div class="skill-bar-wrap"><div class="skill-bar bar-high" data-width="70"></div></div>
             <span class="skill-level">Proficient</span>
           </div>
         </div>
         <div class="skill-item">
           <span class="skill-name">Analytical Problem Framing</span>
           <div style="display:flex;align-items:center">
-            <div class="skill-bar-wrap"><div class="skill-bar bar-high" style="width:75%"></div></div>
+            <div class="skill-bar-wrap"><div class="skill-bar bar-high" data-width="75"></div></div>
             <span class="skill-level">Proficient</span>
           </div>
         </div>
@@ -643,6 +648,7 @@
         <p class="sample-lens">This exercise reframes a technical cloud concept through a risk and control lens — the core translation skill in IS audit and GRC advisory.</p>
       </div>
       <div class="sample-body">
+        <div class="table-scroll">
         <table>
           <thead><tr><th>Asset</th><th>Risk</th><th>Control</th><th>Framework Ref</th></tr></thead>
           <tbody>
@@ -652,6 +658,7 @@
             <tr><td>CloudTrail Logs</td><td>Tampering or deletion of audit trail evidence</td><td>Log file integrity validation; S3 MFA Delete</td><td>NIST AU-9</td></tr>
           </tbody>
         </table>
+        </div>
         <p class="disclaimer">Foundational exercise — pre-formal training. Framework references sourced from public NIST SP 800-53 and ISO/IEC 27001:2022 documentation.</p>
       </div>
     </div>
@@ -666,6 +673,7 @@
         <p class="sample-lens">The goal here isn't deep technical audit — it's demonstrating that risk thinking can be applied systematically to a familiar operational context.</p>
       </div>
       <div class="sample-body">
+        <div class="table-scroll">
         <table>
           <thead><tr><th>Risk</th><th>Category</th><th>Impact</th><th>Suggested Control</th></tr></thead>
           <tbody>
@@ -676,6 +684,7 @@
             <tr><td>Shared admin credentials across departments</td><td>Access Control</td><td>Audit trail failure, insider risk</td><td>Individual accounts; privileged access management</td></tr>
           </tbody>
         </table>
+        </div>
         <p class="disclaimer">Foundational exercise — pre-formal training. Intended to demonstrate structured analytical thinking, not professional-grade audit output.</p>
       </div>
     </div>
@@ -724,31 +733,31 @@
       </div>
       <div>
         <div class="contact-links">
-          <a href="https://linkedin.com/in/YOUR-PROFILE" class="clink" target="_blank" rel="noopener">
+          <a href="https://www.linkedin.com/in/vishnunair0707" class="clink" target="_blank" rel="noopener">
             <div class="clink-icon">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
             </div>
             <div class="clink-body">
               <div class="clink-platform">LinkedIn</div>
-              <div class="clink-value">linkedin.com/in/your-profile</div>
+              <div class="clink-value">linkedin.com/in/vishnunair0707</div>
             </div>
           </a>
-          <a href="mailto:your@email.com" class="clink">
+          <a href="mailto:vishy2912@gmail.com" class="clink">
             <div class="clink-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
             </div>
             <div class="clink-body">
               <div class="clink-platform">Email</div>
-              <div class="clink-value">your@email.com</div>
+              <div class="clink-value">vishy2912@gmail.com</div>
             </div>
           </a>
-          <a href="https://github.com/YOUR-USERNAME" class="clink" target="_blank" rel="noopener">
+          <a href="https://github.com/vishnunair2912" class="clink" target="_blank" rel="noopener">
             <div class="clink-icon">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
             </div>
             <div class="clink-body">
               <div class="clink-platform">GitHub</div>
-              <div class="clink-value">github.com/your-username</div>
+              <div class="clink-value">github.com/vishnunair2912</div>
             </div>
           </a>
         </div>
@@ -764,11 +773,80 @@
   </div>
 </footer>
 
+
 <script>
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+  // ── FADE IN ON SCROLL ──
+  document.querySelectorAll('.fade').forEach(el => el.classList.add('animate'));
+  const fadeObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.fade').forEach(el => fadeObs.observe(el));
+
+  // ── COUNTER ANIMATION ──
+  function animateCounter(el, target, suffix, prefix, duration) {
+    let start = null;
+    const isFloat = String(target).includes('.');
+    function step(ts) {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 4);
+      const current = isFloat
+        ? (eased * target).toFixed(1)
+        : Math.floor(eased * target);
+      el.textContent = (prefix || '') + current + (suffix || '');
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = (prefix || '') + target + (suffix || '');
+    }
+    requestAnimationFrame(step);
+  }
+
+  const counterObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const raw = el.dataset.counter;
+      const suffix = el.dataset.suffix || '';
+      const prefix = el.dataset.prefix || '';
+      const target = parseFloat(raw);
+      animateCounter(el, target, suffix, prefix, 1800);
+      counterObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('[data-counter]').forEach(el => counterObs.observe(el));
+
+  // ── SKILL BAR FILL ON SCROLL ──
+  const barObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const bar = e.target;
+      const target = bar.dataset.width;
+      if (target) {
+        setTimeout(() => { bar.style.width = target + '%'; }, 150);
+      }
+      barObs.unobserve(bar);
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.skill-bar[data-width]').forEach(bar => barObs.observe(bar));
+
+  // ── CERT PROGRESS BAR: fill then pulse ──
+  const certBarObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const bar = e.target;
+      const target = bar.dataset.width;
+      if (target) {
+        setTimeout(() => {
+          bar.style.width = target + '%';
+          setTimeout(() => bar.classList.add('pulsing'), 1500);
+        }, 300);
+      }
+      certBarObs.unobserve(bar);
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.cert-progress-bar[data-width]').forEach(bar => certBarObs.observe(bar));
 </script>
 </body>
 </html>
