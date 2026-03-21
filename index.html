@@ -1295,28 +1295,48 @@
 })();
   </script>
 
-  <script>
-  (function() {
-    var WORKER = "https://black-credit-a804.vishy2912.workers.dev";
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") return;
-    var nav = navigator;
-    var conn = nav.connection || nav.mozConnection || nav.webkitConnection || {};
+<script>
+(function() {
+  var WORKER = "https://black-credit-a804.vishy2912.workers.dev";
+  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") return;
+
+  var nav = navigator;
+  var conn = nav.connection || nav.mozConnection || nav.webkitConnection || {};
+
+  var payload = {
+    ua:       nav.userAgent,
+    referrer: document.referrer || "direct",
+    page:     location.pathname,
+    lang:     nav.language || "?",
+    screen:   (screen.width * devicePixelRatio) + "x" + (screen.height * devicePixelRatio),
+    memory:   nav.deviceMemory || "?",
+    cores:    nav.hardwareConcurrency || "?",
+    network:  conn.effectiveType || "?",
+    model:    "?",
+  };
+
+  function send(p) {
     fetch(WORKER, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ua:      nav.userAgent,
-        referrer: document.referrer || "direct",
-        page:     location.pathname,
-        lang:     nav.language || "?",
-        screen:   screen.width + "x" + screen.height,
-        memory:   nav.deviceMemory || "?",
-        cores:    nav.hardwareConcurrency || "?",
-        network:  conn.effectiveType || "?",
-      }),
+      body: JSON.stringify(p),
     }).catch(function() {});
-  })();
-  </script>
+  }
+
+  // Try modern Client Hints API first (Chrome Android 110+)
+  if (nav.userAgentData && nav.userAgentData.getHighEntropyValues) {
+    nav.userAgentData.getHighEntropyValues(["model", "platform", "platformVersion"])
+      .then(function(data) {
+        payload.model = data.model || "?";
+        payload.platform = data.platform || "?";
+        send(payload);
+      })
+      .catch(function() { send(payload); });
+  } else {
+    send(payload);
+  }
+})();
+</script>
 
 </body>
 </html>
